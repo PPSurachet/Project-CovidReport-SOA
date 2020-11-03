@@ -6,7 +6,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Dashboard</title>
+    <title>World map</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
         name='viewport' />
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
@@ -14,6 +14,7 @@
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="assets/css/now-ui-dashboard.css?v=1.0.1" rel="stylesheet" />
     <link href="assets/demo/demo.css" rel="stylesheet" />
+    <link href="dist/jqvmap.css" media="screen" rel="stylesheet" type="text/css">
 </head>
 
 <body class="">
@@ -26,13 +27,13 @@
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                    <li class="active">
+                    <li>
                         <a href="/">
                             <i class="now-ui-icons business_chart-bar-32"></i>
                             <p>Dashboard</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="map">
                             <i class="now-ui-icons location_world"></i>
                             <p>Map</p>
@@ -53,7 +54,7 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                        <a class="navbar-brand" href="#pablo">Dashboard World Wide</a>
+                        <a class="navbar-brand" href="#pablo">Maps</a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
                         aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,63 +62,64 @@
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                     </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                        <form>
+                            <div class="input-group no-border">
+                                <input type="text" value="" class="form-control" placeholder="Search...">
+                                <span class="input-group-addon">
+                                    <i class="now-ui-icons ui-1_zoom-bold"></i>
+                                </span>
+                            </div>
+                        </form>
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="user.html">
+                                    <i class="now-ui-icons users_single-02"></i>
+                                    <p>
+                                        <span class="d-lg-none d-md-block">Account</span>
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
-            <div class="panel-header panel-header-lg">
-                <canvas id="bigDashboardChart"></canvas>
+            <!-- End Navbar -->
+            <div class="panel-header panel-header-sm">
             </div>
             <div class="content">
                 <div class="row">
-                    <div class="col-lg-4">
-                        <div class="card card-chart">
-                            <div class="card-header">
-                                <h5 class="card-category">COVID-19 Report Lasted Week</h5>
-                                <h4 class="card-title">Confirms <span id="TConfirms"></span> peoples</h4>
+                    <div class="col-md-12">
+                        <div class="card ">
+                            <div class="card-header ">
+                                <h5 class="title">World Maps</h5>
                             </div>
-                            <div class="card-body">
-                                <div class="chart-area">
-                                    <canvas id="lineChartExample"></canvas>
-                                </div>
+                            <div class="card-body ">
+                                <div id="vmap" style="width:100%; height:590px" data-toggle="modal"
+                                    data-target="#exampleModalLon"></div>
                             </div>
-                            <div class="card-footer">
-                                <div class="stats">
-                                    <h5 class="card-category">Last Updated <span id="LastDate"></span></h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="card card-chart">
-                            <div class="card-header">
-                                <h5 class="card-category">COVID-19 Report Lasted Week</h5>
-                                <h4 class="card-title">Recovery <span id="TRecovery"></span> peoples</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart-area">
-                                    <canvas id="lineChartExampleRecovery"></canvas>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <div class="stats">
-                                    <h5 class="card-category">Last Updated <span id="LastDate1"></span></h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="card card-chart">
-                            <div class="card-header">
-                                <h5 class="card-category">COVID-19 Report Lasted Week</h5>
-                                <h4 class="card-title">Deaths <span id="TDeaths"></span> peoples</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart-area">
-                                    <canvas id="lineChartExampleDeaths"></canvas>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <div class="stats">
-                                    <h5 class="card-category">Last Updated <span id="LastDate2"></span></h5>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalLon" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h2 class="modal-title" id="NameCountry"></h2>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h5 class="modal-title p-2">Confirmed <span id="TConfirmed"></span> peoples
+                                            </h5>
+                                            <h5 class="modal-title p-2">Recovery <span id="TRecovery"></span> peoples
+                                            </h5>
+                                            <h5 class="modal-title p-2">Deaths <span id="TDeaths"></span> peoples</h5>
+                                            <div class="chart-area pt-4">
+                                                <canvas id="lineChart"></canvas>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <h6 class="modal-title">Last Updated <span id="LastUpdate"></span></h6>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -127,6 +129,8 @@
         </div>
     </div>
 </body>
+
+
 <script src="assets/js/core/jquery.min.js"></script>
 <script src="assets/js/core/popper.min.js"></script>
 <script src="assets/js/core/bootstrap.min.js"></script>
@@ -134,7 +138,8 @@
 <script src="assets/js/plugins/chartjs.min.js"></script>
 <script src="assets/js/plugins/bootstrap-notify.js"></script>
 <script src="assets/js/now-ui-dashboard.js?v=1.0.1"></script>
-<script src="assets/demo/demo.js"></script>
-<script src="javascripts/app.js"></script>
+<script src="javascripts/JQVmap.js"></script>
+<script src="dist/jquery.vmap.js"></script>
+<script src="dist/maps/jquery.vmap.world.js" charset="utf-8"></script>
 
 </html>
