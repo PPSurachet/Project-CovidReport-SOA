@@ -11,9 +11,9 @@
         name='viewport' />
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="assets/css/now-ui-dashboard.css?v=1.0.1" rel="stylesheet" />
-    <link href="assets/demo/demo.css" rel="stylesheet" />
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/assets/css/now-ui-dashboard.css?v=1.0.1" rel="stylesheet" />
+    <link href="/assets/demo/demo.css" rel="stylesheet" />
 </head>
 
 <body class="">
@@ -26,7 +26,7 @@
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                    <li class="active">
+                    <li>
                         <a href="/">
                             <i class="now-ui-icons business_chart-bar-32"></i>
                             <p>Dashboard</p>
@@ -38,7 +38,7 @@
                             <p>Table List</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="/country/Thailand">
                             <i class="now-ui-icons location_world"></i>
                             <p>Country</p>
@@ -59,7 +59,7 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                        <a class="navbar-brand" href="#pablo">Dashboard World Wide</a>
+                        <a class="navbar-brand" href="#pablo">Covid-19 in <%= dataCountry.country %></a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
                         aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,8 +69,7 @@
                     </button>
                 </div>
             </nav>
-            <div class="panel-header panel-header-lg">
-                <canvas id="bigDashboardChart"></canvas>
+            <div class="panel-header panel-header-sm">
             </div>
             <div class="content">
                 <div class="row">
@@ -82,7 +81,8 @@
                             </div>
                             <div class="text-right">
                                 <h1 class="mt-4 mr-4 ml-4 font-weight-bold" style="color: #2CA8FF;">
-                                    <%= Totals.TotalConfirmed %></h1>
+                                    <%= dataCountry.confirmed.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
+                                </h1>
                             </div>
                             <div class="card-footer">
                                 <div class="stats">
@@ -101,7 +101,7 @@
                             </div>
                             <div class="text-right">
                                 <h1 class="mt-4 mr-4 ml-4 font-weight-bold" style="color:  #18ce0f;">
-                                    <%= Totals.TotalRecovered %>
+                                    <%= dataCountry.recovered.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
                                 </h1>
                             </div>
                             <div class=" card-footer">
@@ -120,7 +120,7 @@
                             </div>
                             <div class="text-right">
                                 <h1 class="mt-4 mr-4 ml-4 font-weight-bold" style="color: #ff0000;">
-                                    <%= Totals.TotalDeaths %>
+                                    <%= dataCountry.deaths.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
                                 </h1>
                             </div>
                             <div class="card-footer">
@@ -133,21 +133,74 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card card-chart">
+                            <div class="card-header">
+                                <h5 class="card-category" style="color: black;">COVID-19 Report</h5>
+                                <h2 class="card-title font-weight-bold">Map</h2>
+                            </div>
+                            <div class="text-right">
+                                <h1 class="mt-4 mr-4 ml-4 font-weight-bold" style="color: #2CA8FF;">
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <h5 class="card-category" style="color: black;text-align:right;">
+                                        Last Updated 3 / 22 / 20
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="card card-chart">
+                            <div class="card-header">
+                                <h5 class="card-category" style="color: black;">COVID-19 Report</h5>
+                                <h2 class="card-title font-weight-bold">Pie Chart</h2>
+                            </div>
+                            <div class="text-right">
+                                <h1 class="mt-4 mr-4 ml-4 font-weight-bold" style="color:  #18ce0f;">
+                                </h1>
+                            </div>
+                            <div class=" card-footer">
+                                <div class="stats">
+                                    <h5 class="card-category" style="color: black;text-align:right;">
+                                        Last Updated 3 / 22 / 20</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title" style="font-weight: bold;">Country</h4>
+                                <form class="form-row d-flex justify-content-end mr-4">
+                                    <div class="form-group mb-2">
+                                        <input type="text" class="form-control" id="CountryTable" placeholder="Country">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </body>
-<script src="assets/js/core/jquery.min.js"></script>
-<script src="assets/js/core/popper.min.js"></script>
-<script src="assets/js/core/bootstrap.min.js"></script>
-<script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-<script src="assets/js/plugins/chartjs.min.js"></script>
-<script src="assets/js/plugins/bootstrap-notify.js"></script>
-<script src="assets/js/now-ui-dashboard.js?v=1.0.1"></script>
-<script src="assets/demo/demo.js"></script>
-<script src="javascripts/Dashboard.js"></script>
-<script>
-    getChart(`<%= lastWeekConfirmed %>`, `<%= lastWeekRecovered %>`, `<%= lastWeekDeaths %>`);
-</script>
+<script src="/assets/js/core/jquery.min.js"></script>
+<script src="/assets/js/core/popper.min.js"></script>
+<script src="/assets/js/core/bootstrap.min.js"></script>
+<script src="/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+<script src="/assets/js/plugins/chartjs.min.js"></script>
+<script src="/assets/js/plugins/bootstrap-notify.js"></script>
+<script src="/assets/js/now-ui-dashboard.js?v=1.0.1"></script>
+<script src="/assets/demo/demo.js"></script>
 
 </html>
