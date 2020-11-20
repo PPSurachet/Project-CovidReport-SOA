@@ -14,6 +14,18 @@
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/assets/css/now-ui-dashboard.css?v=1.0.1" rel="stylesheet" />
     <link href="/assets/demo/demo.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    <style>
+        #mapid {
+            margin: 20px;
+            height: 400px;
+        }
+    </style>
 </head>
 
 <body class="">
@@ -40,8 +52,14 @@
                     </li>
                     <li class="active">
                         <a href="/country/Thailand">
-                            <i class="now-ui-icons location_world"></i>
+                            <i class="now-ui-icons location_map-big"></i>
                             <p>Country</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/map">
+                            <i class="now-ui-icons location_world"></i>
+                            <p>Map</p>
                         </a>
                     </li>
                 </ul>
@@ -138,10 +156,10 @@
                         <div class="card card-chart">
                             <div class="card-header">
                                 <h5 class="card-category" style="color: black;">COVID-19 Report</h5>
-                                <h2 class="card-title font-weight-bold">Map</h2>
+                                <h2 class="card-title font-weight-bold"><%= dataCountry.country %> Map</h2>
                             </div>
-                            <div class="text-right">
-                                <h1 class="mt-4 mr-4 ml-4 font-weight-bold" style="color: #2CA8FF;">
+                            <div>
+                                <div id="mapid"></div>
                             </div>
                             <div class="card-footer">
                                 <div class="stats">
@@ -202,5 +220,15 @@
 <script src="/assets/js/plugins/bootstrap-notify.js"></script>
 <script src="/assets/js/now-ui-dashboard.js?v=1.0.1"></script>
 <script src="/assets/demo/demo.js"></script>
+<script>
+    var map = L.map('mapid').setView([parseFloat('<%= dataCountry.lat %>'), parseFloat('<%= dataCountry.long %>')], 4.5);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    L.marker([parseFloat('<%= dataCountry.lat %>'), parseFloat('<%= dataCountry.long %>')]).addTo(map)
+        .bindPopup(`<div class="font-weight-bold h5"><%= dataCountry.country %></div>`)
+        .openPopup();
+</script>
 
 </html>

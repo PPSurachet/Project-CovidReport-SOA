@@ -134,6 +134,8 @@ async function getLastWeekDeaths() {
 async function getStatusByCountry(Country) {
     const sql = `select
     covid19_confirmed_csv."Country/Region" as Country ,
+    covid19_confirmed_csv.lat,
+    covid19_confirmed_csv.long ,
     covid19_confirmed_csv."3/22/20" as Confirmed,
     covid19_death_csv."3/22/20"as Deaths,
     covid19_recovered_csv."3/22/20" as Recovered 
@@ -142,6 +144,17 @@ async function getStatusByCountry(Country) {
     and covid19_confirmed_csv."Country/Region" = covid19_recovered_csv."Country/Region" 
     and covid19_confirmed_csv."Country/Region" = '${Country}'
     `;
+    try {
+        const data = await pool.query(sql);
+        return data;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
+async function getLatLongCountry() {
+    const sql = `select "Country/Region" as Country ,lat,long from covid19_confirmed_csv`;
     try {
         const data = await pool.query(sql);
         return data;
@@ -162,4 +175,5 @@ module.exports = {
     getLastWeekRecovered,
     getLastWeekDeaths,
     getStatusByCountry,
+    getLatLongCountry,
 }

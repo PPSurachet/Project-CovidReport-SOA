@@ -47,7 +47,7 @@ router.get('/', async function (req, res, next) {
       lastWeekDeaths.rows[0].day5,
       lastWeekDeaths.rows[0].day6,
       lastWeekDeaths.rows[0].day7,
-    ]
+    ];
   res.render('index', {
     Totals: Totals,
     lastWeekConfirmed: arraylastWeekConfirmed,
@@ -78,8 +78,13 @@ router.get('/table', async function (req, res, next) {
 router.get('/country/:Country', async function (req, res, next) {
   const Country = req.params.Country;
   const result = await db.getStatusByCountry(Country);
-
+  console.log(result.rows[0]);
   res.render('country', { dataCountry: result.rows[0] });
+});
+
+router.get('/map', async function (req, res, next) {
+  const result = await db.getLatLongCountry();
+  res.render('map', { Maps: result.rows });
 });
 
 module.exports = router;
