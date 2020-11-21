@@ -4,6 +4,7 @@ const db = require('../database/PostgreSQL');
 
 /* GET home page. */
 router.get('/', async function (req, res, next) {
+
   const TotalConfirmed = await db.getTotalConfirmed();
   const TotalRecovered = await db.getTotalRecovered();
   const TotalDeaths = await db.getTotalDeaths();
@@ -18,36 +19,10 @@ router.get('/', async function (req, res, next) {
     TotalDeaths: TotalDeaths.rows[0].deaths.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
   }
 
-  const arraylastWeekConfirmed =
-    [
-      lastWeekConfirmed.rows[0].day1,
-      lastWeekConfirmed.rows[0].day2,
-      lastWeekConfirmed.rows[0].day3,
-      lastWeekConfirmed.rows[0].day4,
-      lastWeekConfirmed.rows[0].day5,
-      lastWeekConfirmed.rows[0].day6,
-      lastWeekConfirmed.rows[0].day7
-    ];
-  const arraylastWeekRecovered =
-    [
-      lastWeekRecovered.rows[0].day1,
-      lastWeekRecovered.rows[0].day2,
-      lastWeekRecovered.rows[0].day3,
-      lastWeekRecovered.rows[0].day4,
-      lastWeekRecovered.rows[0].day5,
-      lastWeekRecovered.rows[0].day6,
-      lastWeekRecovered.rows[0].day7,
-    ];
-  const arraylastWeekDeaths =
-    [
-      lastWeekDeaths.rows[0].day1,
-      lastWeekDeaths.rows[0].day2,
-      lastWeekDeaths.rows[0].day3,
-      lastWeekDeaths.rows[0].day4,
-      lastWeekDeaths.rows[0].day5,
-      lastWeekDeaths.rows[0].day6,
-      lastWeekDeaths.rows[0].day7,
-    ];
+  const arraylastWeekConfirmed = Object.values(lastWeekConfirmed.rows[0]);
+  const arraylastWeekRecovered = Object.values(lastWeekRecovered.rows[0]);
+  const arraylastWeekDeaths = Object.values(lastWeekDeaths.rows[0]);
+
   res.render('index', {
     Totals: Totals,
     lastWeekConfirmed: arraylastWeekConfirmed,
@@ -75,11 +50,28 @@ router.get('/table', async function (req, res, next) {
   res.render('tables', { Countrys: output });
 });
 
-router.get('/country/:Country', async function (req, res, next) {
+router.get('/country/:State/:Country', async function (req, res, next) {
+  const State = req.params.State
   const Country = req.params.Country;
-  const result = await db.getStatusByCountry(Country);
-  console.log(result.rows[0]);
-  res.render('country', { dataCountry: result.rows[0] });
+  let result;
+  let Confirmed, Recovered, Deaths;
+  if (State == "null") {
+    result = await db.getStatusByCountry(Country);
+    Confirmed = await db.getLastWeekConfirmedByCountry(Country);
+    Recovered = await db.getLastWeekRecoveredByCountry(Country);
+    Deaths = await db.getLastWeekDeathsByCountry(Country);
+  } else {
+    result = await db.getStatusByState(State);
+    Confirmed = await db.getLastWeekConfirmedByState(State);
+    Recovered = await db.getLastWeekRecoveredByState(State);
+    Deaths = await db.getLastWeekDeathsByState(State);
+  }
+  res.render('country', {
+    dataCountry: result.rows[0],
+    lastWeekConfirmed: Object.values(Confirmed.rows[0]),
+    lastWeekRecovered: Object.values(Recovered.rows[0]),
+    lastWeekDeaths: Object.values(Deaths.rows[0]),
+  });
 });
 
 router.get('/map', async function (req, res, next) {

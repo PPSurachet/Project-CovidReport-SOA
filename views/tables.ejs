@@ -45,15 +45,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/country/Thailand">
-                            <i class="now-ui-icons location_map-big"></i>
-                            <p>Country</p>
-                        </a>
-                    </li>
-                    <li>
                         <a href="/map">
                             <i class="now-ui-icons location_world"></i>
                             <p>Map</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/country/null/Thailand">
+                            <i class="now-ui-icons location_map-big"></i>
+                            <p>Country</p>
                         </a>
                     </li>
                 </ul>
@@ -121,13 +121,19 @@
                                         <% Countrys.forEach(function(data){ %>
                                         <tr>
                                             <td style="font-weight: bold;"><%= data.State %></td>
-
+                                            <% if(data.State != null){ %>
                                             <td style="font-weight: bold;">
-                                                <a href="/country/<%= data.Country %>">
+                                                <a href="/country/<%= data.State %>/<%= data.Country %>">
                                                     <%= data.Country %>
                                                 </a>
                                             </td>
-
+                                            <% }else{ %>
+                                            <td style="font-weight: bold;">
+                                                <a href="/country/null/<%= data.Country %>">
+                                                    <%= data.Country %>
+                                                </a>
+                                            </td>
+                                            <%}%>
                                             <td style="font-weight: bold;"><%= data.Confirmed %></td>
                                             <td style="font-weight: bold;"><%= data.Recovered %></td>
                                             <td style="font-weight: bold;"><%= data.Deaths %></td>

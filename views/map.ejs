@@ -56,16 +56,16 @@
                             <p>Table List</p>
                         </a>
                     </li>
-                    <li>
-                        <a href="/country/Thailand">
-                            <i class="now-ui-icons location_map-big"></i>
-                            <p>Country</p>
-                        </a>
-                    </li>
                     <li class="active">
                         <a href="/map">
                             <i class="now-ui-icons location_world"></i>
                             <p>Map</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/country/null/Thailand">
+                            <i class="now-ui-icons location_map-big"></i>
+                            <p>Country</p>
                         </a>
                     </li>
                 </ul>
@@ -129,11 +129,20 @@
     }).addTo(map);
 </script>
 <% Maps.forEach(function(data){ %>
+<%if(data.state != null){%>
 <script>
     L.marker([parseFloat('<%= data.lat %>'), parseFloat('<%= data.long %>')]).addTo(map)
-        .bindPopup(`<a class="font-weight-bold h5" href="country/<%= data.country %>"><%= data.country %></a>`)
+        .bindPopup(`<a class="font-weight-bold h5" href="country/<%= data.state %>/<%= data.country %>"><%= data.state %></a>`)
         .openPopup();
 </script>
+<%}else{%>
+<script>
+    L.marker([parseFloat('<%= data.lat %>'), parseFloat('<%= data.long %>')]).addTo(map)
+        .bindPopup(`<a class="font-weight-bold h5" href="country/null/<%= data.country %>"><%= data.country %></a>`)
+        .openPopup();
+</script>
+<%}%>
 <% }); %>
+
 
 </html>

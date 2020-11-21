@@ -23,7 +23,16 @@
     <style>
         #mapid {
             margin: 20px;
-            height: 400px;
+            height: 743px;
+        }
+
+        #pieChart {
+            padding-top: 15px;
+            padding-right: 25px;
+        }
+
+        #barChart {
+            padding-top: 15px;
         }
     </style>
 </head>
@@ -50,16 +59,16 @@
                             <p>Table List</p>
                         </a>
                     </li>
-                    <li class="active">
-                        <a href="/country/Thailand">
-                            <i class="now-ui-icons location_map-big"></i>
-                            <p>Country</p>
-                        </a>
-                    </li>
                     <li>
                         <a href="/map">
                             <i class="now-ui-icons location_world"></i>
                             <p>Map</p>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="/country/null/Thailand">
+                            <i class="now-ui-icons location_map-big"></i>
+                            <p>Country</p>
                         </a>
                     </li>
                 </ul>
@@ -156,7 +165,7 @@
                         <div class="card card-chart">
                             <div class="card-header">
                                 <h5 class="card-category" style="color: black;">COVID-19 Report</h5>
-                                <h2 class="card-title font-weight-bold"><%= dataCountry.country %> Map</h2>
+                                <h2 class="card-title font-weight-bold"><%= dataCountry.country %></h2>
                             </div>
                             <div>
                                 <div id="mapid"></div>
@@ -177,8 +186,22 @@
                                 <h2 class="card-title font-weight-bold">Pie Chart</h2>
                             </div>
                             <div class="text-right">
-                                <h1 class="mt-4 mr-4 ml-4 font-weight-bold" style="color:  #18ce0f;">
-                                </h1>
+                                <canvas class="chart w-100" id="pieChart"></canvas>
+                            </div>
+                            <div class=" card-footer">
+                                <div class="stats">
+                                    <h5 class="card-category" style="color: black;text-align:right;">
+                                        Last Updated 3 / 22 / 20</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card card-chart">
+                            <div class="card-header">
+                                <h5 class="card-category" style="color: black;">COVID-19 Report</h5>
+                                <h2 class="card-title font-weight-bold">Bar Chart</h2>
+                            </div>
+                            <div class="text-right">
+                                <canvas class="chart w-100" id="barChart"></canvas>
                             </div>
                             <div class=" card-footer">
                                 <div class="stats">
@@ -220,6 +243,7 @@
 <script src="/assets/js/plugins/bootstrap-notify.js"></script>
 <script src="/assets/js/now-ui-dashboard.js?v=1.0.1"></script>
 <script src="/assets/demo/demo.js"></script>
+<script src="/javascripts/country.js"></script>
 <script>
     var map = L.map('mapid').setView([parseFloat('<%= dataCountry.lat %>'), parseFloat('<%= dataCountry.long %>')], 4.5);
 
@@ -229,6 +253,10 @@
     L.marker([parseFloat('<%= dataCountry.lat %>'), parseFloat('<%= dataCountry.long %>')]).addTo(map)
         .bindPopup(`<div class="font-weight-bold h5"><%= dataCountry.country %></div>`)
         .openPopup();
+</script>
+<script>
+    initPieChart('<%= dataCountry.confirmed %>', '<%= dataCountry.recovered %>', '<%= dataCountry.deaths %>');
+    initBarChart(`<%= lastWeekConfirmed %>`, `<%= lastWeekRecovered %>`, `<%= lastWeekDeaths %>`);
 </script>
 
 </html>

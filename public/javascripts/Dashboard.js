@@ -1,33 +1,16 @@
 function getChart(Confirmed, Recovered, Deaths) {
-    const allConfirmed = [
-        parseInt(Confirmed.substring(0, 6)),
-        parseInt(Confirmed.substring(7, 13)),
-        parseInt(Confirmed.substring(14, 20)),
-        parseInt(Confirmed.substring(21, 27)),
-        parseInt(Confirmed.substring(28, 34)),
-        parseInt(Confirmed.substring(35, 41)),
-        parseInt(Confirmed.substring(42, 48)),
-    ]
 
-    const allRecovered = [
-        parseInt(Recovered.substring(0, 5)),
-        parseInt(Recovered.substring(6, 11)),
-        parseInt(Recovered.substring(12, 17)),
-        parseInt(Recovered.substring(18, 23)),
-        parseInt(Recovered.substring(24, 29)),
-        parseInt(Recovered.substring(30, 35)),
-        parseInt(Recovered.substring(36, 41)),
-    ]
-
-    const allDeaths = [
-        parseInt(Deaths.substring(0, 4)),
-        parseInt(Deaths.substring(5, 9)),
-        parseInt(Deaths.substring(10, 14)),
-        parseInt(Deaths.substring(15, 19)),
-        parseInt(Deaths.substring(20, 25)),
-        parseInt(Deaths.substring(26, 31)),
-        parseInt(Deaths.substring(32, 37))
-    ]
+    const spiltNumberConfirmed = Confirmed.split(',');
+    const spiltNumberRecovered = Recovered.split(',');
+    const spiltNumberDeaths = Deaths.split(',');
+    const allConfirmed = [];
+    const allRecovered = [];
+    const allDeaths = [];
+    for (const key in spiltNumberConfirmed) {
+        allConfirmed.push(parseInt(spiltNumberConfirmed[key]));
+        allRecovered.push(parseInt(spiltNumberRecovered[key]));
+        allDeaths.push(parseInt(spiltNumberDeaths[key]));
+    }
 
     chartColor = "#FFFFFF";
 
