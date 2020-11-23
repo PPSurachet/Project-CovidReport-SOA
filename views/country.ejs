@@ -216,16 +216,57 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title" style="font-weight: bold;">Country</h4>
-                                <form class="form-row d-flex justify-content-end mr-4">
-                                    <div class="form-group mb-2">
-                                        <input type="text" class="form-control" id="CountryTable" placeholder="Country">
+                                <div class="row">
+                                    <div class="text-left ml-3">
+                                        <h4 class="card-title" style="font-weight: bold;">Table Country</h4>
                                     </div>
-                                </form>
+                                    <div class="text-right ml-auto">
+                                        <form class="form-row d-flex justify-content-end mr-4">
+                                            <div class="form-group mb-2">
+                                                <label for="CountryTable">Search Date</label>
+                                                <input type="text" class="form-control" id="CountryTable"
+                                                    placeholder="Country">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-
+                                    <table class="table  table-hover" id="myTable">
+                                        <thead class=" text-primary">
+                                            <th style="font-weight: bold;" class="text-center">
+                                                State
+                                            </th>
+                                            <th style="font-weight: bold;" class="text-center">
+                                                Country
+                                            </th>
+                                            <th style="font-weight: bold;" class="text-center">
+                                                Date
+                                            </th>
+                                            <th style="font-weight: bold;" class="text-center">
+                                                Confirmed
+                                            </th>
+                                            <th style="font-weight: bold;" class="text-center">
+                                                Recovered
+                                            </th>
+                                            <th style="font-weight: bold;" class="text-center">
+                                                Deaths
+                                            </th>
+                                        </thead>
+                                        <tbody id="showData">
+                                            <% Tables.forEach(function(data){ %>
+                                            <tr>
+                                                <td class="font-weight-bold text-center"><%= data.State %></td>
+                                                <td class="font-weight-bold text-center"><%= data.Country %></td>
+                                                <td class="font-weight-bold text-center"><%= data.Date %></td>
+                                                <td class="font-weight-bold text-center"><%= data.Confirmed %></td>
+                                                <td class="font-weight-bold text-center"><%= data.Recovered %></td>
+                                                <td class="font-weight-bold text-center"><%= data.Deaths %></td>
+                                            </tr>
+                                            <% }); %>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -257,6 +298,14 @@
 <script>
     initPieChart('<%= dataCountry.confirmed %>', '<%= dataCountry.recovered %>', '<%= dataCountry.deaths %>');
     initBarChart(`<%= lastWeekConfirmed %>`, `<%= lastWeekRecovered %>`, `<%= lastWeekDeaths %>`);
+</script>
+<script>
+    $("#CountryTable").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#showData tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
 </script>
 
 </html>

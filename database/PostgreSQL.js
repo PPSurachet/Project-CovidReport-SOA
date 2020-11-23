@@ -306,6 +306,72 @@ async function getLastWeekDeathsByState(State) {
     }
 }
 
+async function getAllConfirmedByCountry(Country) {
+    const sql = `SELECT * from covid19_confirmed_csv where "Country/Region" = '${Country}' `;
+    try {
+        const data = await pool.query(sql);
+        return data;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
+async function getAllRecoveredByCountry(Country) {
+    const sql = `SELECT * from covid19_recovered_csv where "Country/Region" = '${Country}' `;
+    try {
+        const data = await pool.query(sql);
+        return data;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
+async function getAllDeathsByCountry(Country) {
+    const sql = `SELECT * from covid19_death_csv where "Country/Region" = '${Country}' `;
+    try {
+        const data = await pool.query(sql);
+        return data;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
+async function getAllConfirmedByState(State) {
+    const sql = `SELECT * from covid19_confirmed_csv where "Province/State" = '${State}'`;
+    try {
+        const data = await pool.query(sql);
+        return data;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
+async function getAllRecoveredByState(State) {
+    const sql = `SELECT * from covid19_recovered_csv where "Province/State" = '${State}'`;
+    try {
+        const data = await pool.query(sql);
+        return data;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
+async function getAllDeathsByState(State) {
+    const sql = `SELECT * from covid19_death_csv where "Province/State" = '${State}'`;
+    try {
+        const data = await pool.query(sql);
+        return data;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
 module.exports = {
     getAllCountry,
     getLastUpdateRecovered,
@@ -325,4 +391,10 @@ module.exports = {
     getLastWeekConfirmedByState,
     getLastWeekRecoveredByState,
     getLastWeekDeathsByState,
+    getAllConfirmedByCountry,
+    getAllRecoveredByCountry,
+    getAllDeathsByCountry,
+    getAllConfirmedByState,
+    getAllRecoveredByState,
+    getAllDeathsByState,
 }

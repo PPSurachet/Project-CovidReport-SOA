@@ -19,15 +19,11 @@ router.get('/', async function (req, res, next) {
     TotalDeaths: TotalDeaths.rows[0].deaths.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
   }
 
-  const arraylastWeekConfirmed = Object.values(lastWeekConfirmed.rows[0]);
-  const arraylastWeekRecovered = Object.values(lastWeekRecovered.rows[0]);
-  const arraylastWeekDeaths = Object.values(lastWeekDeaths.rows[0]);
-
   res.render('index', {
     Totals: Totals,
-    lastWeekConfirmed: arraylastWeekConfirmed,
-    lastWeekRecovered: arraylastWeekRecovered,
-    lastWeekDeaths: arraylastWeekDeaths,
+    lastWeekConfirmed: Object.values(lastWeekConfirmed.rows[0]),
+    lastWeekRecovered: Object.values(lastWeekRecovered.rows[0]),
+    lastWeekDeaths: Object.values(lastWeekDeaths.rows[0]),
   });
 });
 
@@ -53,24 +49,56 @@ router.get('/table', async function (req, res, next) {
 router.get('/country/:State/:Country', async function (req, res, next) {
   const State = req.params.State
   const Country = req.params.Country;
+
   let result;
-  let Confirmed, Recovered, Deaths;
+  let stateName;
+  let ChartConfirmed, ChartRecovered, ChartDeaths;
+  let allConfirmed, allRecovered, allDeaths;
   if (State == "null") {
+    stateName = "";
     result = await db.getStatusByCountry(Country);
-    Confirmed = await db.getLastWeekConfirmedByCountry(Country);
-    Recovered = await db.getLastWeekRecoveredByCountry(Country);
-    Deaths = await db.getLastWeekDeathsByCountry(Country);
+    ChartConfirmed = await db.getLastWeekConfirmedByCountry(Country);
+    ChartRecovered = await db.getLastWeekRecoveredByCountry(Country);
+    ChartDeaths = await db.getLastWeekDeathsByCountry(Country);
+    allConfirmed = await db.getAllConfirmedByCountry(Country);
+    allRecovered = await db.getAllRecoveredByCountry(Country);
+    allDeaths = await db.getAllDeathsByCountry(Country);
   } else {
+    stateName = State;
     result = await db.getStatusByState(State);
-    Confirmed = await db.getLastWeekConfirmedByState(State);
-    Recovered = await db.getLastWeekRecoveredByState(State);
-    Deaths = await db.getLastWeekDeathsByState(State);
+    ChartConfirmed = await db.getLastWeekConfirmedByState(State);
+    ChartRecovered = await db.getLastWeekRecoveredByState(State);
+    ChartDeaths = await db.getLastWeekDeathsByState(State);
+    allConfirmed = await db.getAllConfirmedByState(State);
+    allRecovered = await db.getAllRecoveredByState(State);
+    allDeaths = await db.getAllDeathsByState(State);
   }
+
+  const getColumnDate = Object.keys(allConfirmed.rows[0]);
+  const getValueConfirmed = Object.values(allConfirmed.rows[0]);
+  const getValueRecovered = Object.values(allRecovered.rows[0]);
+  const getValueDeaths = Object.values(allDeaths.rows[0]);
+
+  let Obj = [];
+  for (const key in getColumnDate) {
+    if (getColumnDate.hasOwnProperty(key) && (getColumnDate[key].length <= 7 && getColumnDate[key].length > 4)) {
+      Obj[key] = {
+        State: stateName,
+        Country: Country,
+        Date: getColumnDate[key],
+        Confirmed: getValueConfirmed[key],
+        Recovered: getValueRecovered[key],
+        Deaths: getValueDeaths[key],
+      }
+    }
+  }
+
   res.render('country', {
     dataCountry: result.rows[0],
-    lastWeekConfirmed: Object.values(Confirmed.rows[0]),
-    lastWeekRecovered: Object.values(Recovered.rows[0]),
-    lastWeekDeaths: Object.values(Deaths.rows[0]),
+    lastWeekConfirmed: Object.values(ChartConfirmed.rows[0]),
+    lastWeekRecovered: Object.values(ChartRecovered.rows[0]),
+    lastWeekDeaths: Object.values(ChartDeaths.rows[0]),
+    Tables: Obj,
   });
 });
 
