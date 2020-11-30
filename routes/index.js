@@ -21,9 +21,9 @@ router.get('/', async function (req, res, next) {
 
   res.render('index', {
     Totals: Totals,
-    lastWeekConfirmed: Object.values(lastWeekConfirmed.rows[0]),
-    lastWeekRecovered: Object.values(lastWeekRecovered.rows[0]),
-    lastWeekDeaths: Object.values(lastWeekDeaths.rows[0]),
+    lastWeekConfirmed: lastWeekConfirmed.rows[0],
+    lastWeekRecovered: lastWeekRecovered.rows[0],
+    lastWeekDeaths: lastWeekDeaths.rows[0],
   });
 });
 
@@ -31,10 +31,10 @@ router.get('/table', async function (req, res, next) {
   const Country = await db.getAllCountry();
   const Recovered = await db.getLastUpdateRecovered();
   const Deaths = await db.getLastUpdateDeaths();
-  var output = [];
+  var objectCountry = [];
   for (let index = 0; index < Country.rows.length; index++) {
     if (Country.rows[index].confirmed != null) {
-      output[index] = {
+      objectCountry[index] = {
         State: Country.rows[index].state,
         Country: Country.rows[index].country,
         Confirmed: Country.rows[index].confirmed,
@@ -43,7 +43,8 @@ router.get('/table', async function (req, res, next) {
       }
     }
   }
-  res.render('tables', { Countrys: output });
+  console.log(objectCountry.length);
+  res.render('tables', { Countrys: objectCountry });
 });
 
 router.get('/country/:State/:Country', async function (req, res, next) {
@@ -79,10 +80,10 @@ router.get('/country/:State/:Country', async function (req, res, next) {
   const getValueRecovered = Object.values(allRecovered.rows[0]);
   const getValueDeaths = Object.values(allDeaths.rows[0]);
 
-  let Obj = [];
+  let ObjectCountry = [];
   for (const key in getColumnDate) {
     if (getColumnDate.hasOwnProperty(key) && (getColumnDate[key].length <= 7 && getColumnDate[key].length > 4)) {
-      Obj[key] = {
+      ObjectCountry[key] = {
         State: stateName,
         Country: Country,
         Date: getColumnDate[key],
@@ -92,19 +93,34 @@ router.get('/country/:State/:Country', async function (req, res, next) {
       }
     }
   }
-
   res.render('country', {
     dataCountry: result.rows[0],
     lastWeekConfirmed: Object.values(ChartConfirmed.rows[0]),
     lastWeekRecovered: Object.values(ChartRecovered.rows[0]),
     lastWeekDeaths: Object.values(ChartDeaths.rows[0]),
-    Tables: Obj,
+    Tables: ObjectCountry,
   });
 });
 
 router.get('/map', async function (req, res, next) {
   const result = await db.getLatLongCountry();
-  res.render('map', { Maps: result.rows });
+  const Country = await db.getAllCountry();
+  const Recovered = await db.getLastUpdateRecovered();
+  const Deaths = await db.getLastUpdateDeaths();
+  var i = 0;
+  var reduceArrayMap = [];
+  for (var index = 0; index < Country.rows.length; index++) {
+    if (Country.rows[index].confirmed != 0 && Recovered.rows[index].recovered != 0 || Deaths.rows[index].deaths != 0) {
+      reduceArrayMap[i] = {
+        state: result.rows[index].state,
+        country: result.rows[index].country,
+        lat: result.rows[index].lat,
+        long: result.rows[index].long,
+      }
+      i++;
+    }
+  }
+  res.render('map', { Maps: reduceArrayMap });
 });
 
 module.exports = router;

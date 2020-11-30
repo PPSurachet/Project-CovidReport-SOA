@@ -14,6 +14,7 @@
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/assets/css/now-ui-dashboard.css?v=1.0.1" rel="stylesheet" />
     <link href="/assets/demo/demo.css" rel="stylesheet" />
+    <link href="/stylesheets/dataTables.bootstrap4.min.css" rel=" stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
         integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
         crossorigin="" />
@@ -99,6 +100,19 @@
             <div class="panel-header panel-header-sm">
             </div>
             <div class="content">
+                <div class="d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card card-chart">
+                            <div class="card-header mb-4">
+                                <div class="text-center">
+                                    <h2 class="card-title font-weight-bold h2">Covid Report in
+                                        <%= dataCountry.country %>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="card card-chart">
@@ -220,15 +234,6 @@
                                     <div class="text-left ml-3">
                                         <h4 class="card-title" style="font-weight: bold;">Table Country</h4>
                                     </div>
-                                    <div class="text-right ml-auto">
-                                        <form class="form-row d-flex justify-content-end mr-4">
-                                            <div class="form-group mb-2">
-                                                <label for="CountryTable">Search Date</label>
-                                                <input type="text" class="form-control" id="CountryTable"
-                                                    placeholder="Country">
-                                            </div>
-                                        </form>
-                                    </div>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -285,27 +290,13 @@
 <script src="/assets/js/now-ui-dashboard.js?v=1.0.1"></script>
 <script src="/assets/demo/demo.js"></script>
 <script src="/javascripts/country.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 <script>
-    var map = L.map('mapid').setView([parseFloat('<%= dataCountry.lat %>'), parseFloat('<%= dataCountry.long %>')], 4.5);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-    L.marker([parseFloat('<%= dataCountry.lat %>'), parseFloat('<%= dataCountry.long %>')]).addTo(map)
-        .bindPopup(`<div class="font-weight-bold h5"><%= dataCountry.country %></div>`)
-        .openPopup();
-</script>
-<script>
-    initPieChart('<%= dataCountry.confirmed %>', '<%= dataCountry.recovered %>', '<%= dataCountry.deaths %>');
-    initBarChart(`<%= lastWeekConfirmed %>`, `<%= lastWeekRecovered %>`, `<%= lastWeekDeaths %>`);
-</script>
-<script>
-    $("#CountryTable").on("keyup", function () {
-        var value = $(this).val().toLowerCase();
-        $("#showData tr").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-    });
+    $('#myTable').DataTable();
+    getMaps('<%- JSON.stringify(dataCountry) %>');
+    initPieChart('<%- JSON.stringify(dataCountry) %>');
+    initBarChart(`<%- JSON.stringify(lastWeekConfirmed) %>`, `<%- JSON.stringify(lastWeekRecovered) %>`, `<%- JSON.stringify(lastWeekDeaths) %>`);
 </script>
 
 </html>

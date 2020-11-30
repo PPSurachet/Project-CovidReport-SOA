@@ -1,15 +1,16 @@
 function getChart(Confirmed, Recovered, Deaths) {
 
-    const spiltNumberConfirmed = Confirmed.split(',');
-    const spiltNumberRecovered = Recovered.split(',');
-    const spiltNumberDeaths = Deaths.split(',');
-    const allConfirmed = [];
-    const allRecovered = [];
-    const allDeaths = [];
-    for (const key in spiltNumberConfirmed) {
-        allConfirmed.push(parseInt(spiltNumberConfirmed[key]));
-        allRecovered.push(parseInt(spiltNumberRecovered[key]));
-        allDeaths.push(parseInt(spiltNumberDeaths[key]));
+    const parseConfirmed = JSON.parse(Confirmed);
+    const parseRecovered = JSON.parse(Recovered);
+    const parseDeaths = JSON.parse(Deaths);
+
+    var dataConfirmed = [];
+    var dataRecovered = [];
+    var dataDeaths = [];
+    for (const key in parseConfirmed) {
+        dataConfirmed[key] = parseInt(parseConfirmed[key])
+        dataRecovered[key] = parseInt(parseRecovered[key])
+        dataDeaths[key] = parseInt(parseDeaths[key])
     }
 
     chartColor = "#FFFFFF";
@@ -140,7 +141,7 @@ function getChart(Confirmed, Recovered, Deaths) {
                 fill: true,
                 backgroundColor: gradientFill,
                 borderWidth: 2,
-                data: allConfirmed,
+                data: Object.values(dataConfirmed),
             }, {
                 label: "Recovery",
                 borderColor: "#18ce0f",
@@ -154,7 +155,7 @@ function getChart(Confirmed, Recovered, Deaths) {
                 fill: true,
                 backgroundColor: gradientFillRecovery,
                 borderWidth: 2,
-                data: allRecovered,
+                data: Object.values(dataRecovered),
             }, {
                 label: "Deaths",
                 borderColor: "#DC143C",
@@ -168,7 +169,7 @@ function getChart(Confirmed, Recovered, Deaths) {
                 fill: true,
                 backgroundColor: gradientFillDeaths,
                 borderWidth: 2,
-                data: allDeaths,
+                data: Object.values(dataDeaths),
             }]
         },
         options: {

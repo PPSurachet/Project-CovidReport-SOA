@@ -1,4 +1,7 @@
-const initPieChart = (Confirmed, Recovered, Deaths) => {
+const initPieChart = (data) => {
+
+  const parseData = JSON.parse(data);
+
   var pieOptions = {
     responsive: true,
     segmentShowStroke: true,
@@ -19,13 +22,12 @@ const initPieChart = (Confirmed, Recovered, Deaths) => {
       }
     }
   }
-
   var ctx = document.getElementById("pieChart");
   new Chart(ctx, {
     type: 'doughnut',
     data: {
       datasets: [{
-        data: [parseInt(Confirmed), parseInt(Deaths), parseInt(Recovered)],
+        data: [parseData.confirmed, parseData.deaths, parseData.recovered],
         backgroundColor: [
           '#2CA8FF',
           '#ff0000',
@@ -45,18 +47,9 @@ const initPieChart = (Confirmed, Recovered, Deaths) => {
 
 const initBarChart = (Confirmed, Recovered, Deaths) => {
 
-  const spiltNumberConfirmed = Confirmed.split(',');
-  const spiltNumberRecovered = Recovered.split(',');
-  const spiltNumberDeaths = Deaths.split(',');
-  const allConfirmed = [];
-  const allRecovered = [];
-  const allDeaths = [];
-
-  for (const key in spiltNumberConfirmed) {
-    allConfirmed.push(parseInt(spiltNumberConfirmed[key]));
-    allRecovered.push(parseInt(spiltNumberRecovered[key]));
-    allDeaths.push(parseInt(spiltNumberDeaths[key]));
-  }
+  const dataConfirmed = JSON.parse(Confirmed);
+  const dataRecovered = JSON.parse(Recovered);
+  const dataDeaths = JSON.parse(Deaths);
 
   var areaChartData = {
     labels: [
@@ -72,17 +65,17 @@ const initBarChart = (Confirmed, Recovered, Deaths) => {
       {
         label: 'Deaths',
         backgroundColor: '#ff0000',
-        data: allDeaths
+        data: dataDeaths,
       },
       {
         label: 'Recovered',
         backgroundColor: '#18ce0f',
-        data: allRecovered
+        data: dataRecovered,
       },
       {
         label: 'Confirmed',
         backgroundColor: '#2CA8FF',
-        data: allConfirmed
+        data: dataConfirmed,
       },
     ]
   }
@@ -127,4 +120,16 @@ const initBarChart = (Confirmed, Recovered, Deaths) => {
     data: areaChartData,
     options: barChartOptions
   });
+}
+
+const getMaps = (data) => {
+  const parseData = JSON.parse(data)
+  var map = L.map('mapid').setView([parseFloat(parseData.lat), parseFloat(parseData.long)], 4.5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+  L.marker([parseFloat(parseData.lat), parseFloat(parseData.long)]).addTo(map)
+    .bindPopup(`<div class="font-weight-bold h5">${parseData.country}</div>`)
+    .openPopup();
 }

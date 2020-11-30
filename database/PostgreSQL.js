@@ -8,7 +8,7 @@ const pool = new Pool({
     port: 5432,
 })
 
-async function getAllCountry() {
+const getAllCountry = async () => {
     const sql = `SELECT "Province/State" as State , "Country/Region" as Country ,  "3/22/20" as Confirmed from covid19_confirmed_csv`;
     try {
         const data = await pool.query(sql);
@@ -153,7 +153,7 @@ async function getStatusByCountry(Country) {
     }
 }
 
-async function getStatusByState(Country) {
+async function getStatusByState(State) {
     const sql = `select
     covid19_confirmed_csv."Province/State" as Country ,
     covid19_confirmed_csv.lat,
@@ -164,7 +164,7 @@ async function getStatusByState(Country) {
     from covid19_confirmed_csv, covid19_death_csv, covid19_recovered_csv
     where covid19_confirmed_csv."Province/State" = covid19_death_csv."Province/State" 
     and covid19_confirmed_csv."Province/State" = covid19_recovered_csv."Province/State" 
-    and covid19_confirmed_csv."Province/State" = '${Country}'
+    and covid19_confirmed_csv."Province/State" = '${State}'
     `;
     try {
         const data = await pool.query(sql);

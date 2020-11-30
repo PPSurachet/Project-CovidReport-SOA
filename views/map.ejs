@@ -19,16 +19,33 @@
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="assets/css/now-ui-dashboard.css?v=1.5.0" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link href="assets/demo/demo.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/leaflet-tag-filter-button@0.0.4/docs/assets/css/leaflet-easy-button.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/leaflet-tag-filter-button@0.0.4/src/leaflet-tag-filter-button.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/leaflet-tag-filter-button@0.0.4/docs/assets/css/ripple.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/leaflet-tag-filter-button@0.0.4/docs/assets/js/leaflet-easy-button.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/leaflet-tag-filter-button@0.0.4/src/leaflet-tag-filter-button.js"></script>
     <style>
         #mapid {
             height: 570px;
+        }
+
+        .leaflet-touch .leaflet-bar a {
+            width: auto;
+            height: auto;
+        }
+
+        .leaflet-bar a,
+        .leaflet-bar a:hover {
+            padding: 5px;
+            width: auto;
+            height: auto;
         }
     </style>
 
@@ -121,28 +138,9 @@
 <script src="assets/js/plugins/chartjs.min.js"></script>
 <script src="assets/js/plugins/bootstrap-notify.js"></script>
 <script src="assets/js/now-ui-dashboard.js?v=1.0.1"></script>
+<script src="javascripts/map.js"></script>
 <script>
-    var map = L.map('mapid').setView([51.505, -0.09], 2);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    getMap(`<%- JSON.stringify(Maps) %>`);
 </script>
-<% Maps.forEach(function(data){ %>
-<%if(data.state != null){%>
-<script>
-    L.marker([parseFloat('<%= data.lat %>'), parseFloat('<%= data.long %>')]).addTo(map)
-        .bindPopup(`<a class="font-weight-bold h5" href="country/<%= data.state %>/<%= data.country %>"><%= data.state %></a>`)
-        .openPopup();
-</script>
-<%}else{%>
-<script>
-    L.marker([parseFloat('<%= data.lat %>'), parseFloat('<%= data.long %>')]).addTo(map)
-        .bindPopup(`<a class="font-weight-bold h5" href="country/null/<%= data.country %>"><%= data.country %></a>`)
-        .openPopup();
-</script>
-<%}%>
-<% }); %>
-
 
 </html>

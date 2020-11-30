@@ -153,7 +153,7 @@
 <script src="assets/demo/demo.js"></script>
 <script src="javascripts/Dashboard.js"></script>
 <script>
-    getChart(`<%= lastWeekConfirmed %>`, `<%= lastWeekRecovered %>`, `<%= lastWeekDeaths %>`);
+    getChart(`<%- JSON.stringify(lastWeekConfirmed) %>`, `<%- JSON.stringify(lastWeekRecovered) %>`, `<%- JSON.stringify(lastWeekDeaths) %>`);
 </script>
 
 </html>
