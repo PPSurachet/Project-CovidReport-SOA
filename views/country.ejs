@@ -265,9 +265,15 @@
                                                 <td class="font-weight-bold text-center"><%= data.State %></td>
                                                 <td class="font-weight-bold text-center"><%= data.Country %></td>
                                                 <td class="font-weight-bold text-center"><%= data.Date %></td>
-                                                <td class="font-weight-bold text-center"><%= data.Confirmed %></td>
-                                                <td class="font-weight-bold text-center"><%= data.Recovered %></td>
-                                                <td class="font-weight-bold text-center"><%= data.Deaths %></td>
+                                                <td class="font-weight-bold text-center">
+                                                    <%= data.Confirmed.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
+                                                </td>
+                                                <td class="font-weight-bold text-center">
+                                                    <%= data.Recovered.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
+                                                </td>
+                                                <td class="font-weight-bold text-center">
+                                                    <%= data.Deaths.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
+                                                </td>
                                             </tr>
                                             <% }); %>
                                         </tbody>

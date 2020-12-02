@@ -3,6 +3,17 @@ const getMap = (data) => {
     console.log(dataMaps);
     const url = "https://raw.githubusercontent.com/samayo/country-json/master/src/country-by-continent.json";
 
+    var map = L.map('mapid').setView([28.0339, 1.6596], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    L.control.tagFilterButton({
+        data: ['Asia', 'Europe', 'Africa', 'North America', 'South America', 'Oceania'],
+        filterOnEveryClick: true,
+    }).addTo(map);
+
     $.getJSON(url, function (result) {
         for (const key in dataMaps) {
             for (const index in result) {
@@ -20,18 +31,6 @@ const getMap = (data) => {
             }
         }
     })
-
-    var map = L.map('mapid').setView([28.0339, 1.6596], 2);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    L.control.tagFilterButton({
-        data: ['Asia', 'Europe', 'Africa', 'North America', 'South America', 'Oceania'],
-        filterOnEveryClick: true,
-    }).addTo(map);
-
 
     // for (const key in dataMaps) {
     //     if (dataMaps[key].state != null) {

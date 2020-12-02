@@ -130,9 +130,15 @@
                                                 </a>
                                             </td>
                                             <%}%>
-                                            <td style="font-weight: bold;"><%= data.Confirmed %></td>
-                                            <td style="font-weight: bold;"><%= data.Recovered %></td>
-                                            <td style="font-weight: bold;"><%= data.Deaths %></td>
+                                            <td style="font-weight: bold;">
+                                                <%= data.Confirmed.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
+                                            </td>
+                                            <td style="font-weight: bold;">
+                                                <%= data.Recovered.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
+                                            </td>
+                                            <td style="font-weight: bold;">
+                                                <%= data.Deaths.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
+                                            </td>
                                         </tr>
                                         <% }); %>
                                     </tbody>
