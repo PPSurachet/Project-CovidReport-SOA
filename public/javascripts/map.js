@@ -1,6 +1,6 @@
 const getMap = (data) => {
     const dataMaps = JSON.parse(data)
-    console.log(dataMaps);
+
     const url = "https://raw.githubusercontent.com/samayo/country-json/master/src/country-by-continent.json";
 
     var map = L.map('mapid').setView([28.0339, 1.6596], 2);

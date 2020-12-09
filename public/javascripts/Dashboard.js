@@ -1,4 +1,4 @@
-function getChart(Confirmed, Recovered, Deaths) {
+function getChart(Confirmed, Recovered, Deaths, test) {
 
     const parseConfirmed = JSON.parse(Confirmed);
     const parseRecovered = JSON.parse(Recovered);
