@@ -2,11 +2,11 @@ const { Pool } = require('pg')
 
 
 const pool = new Pool({
-    user: //User Database,
-        host: //host Database,
-    database: //Name Database,
-        password: //Password Database,
-    port: 5432,
+    // user: User Database,
+    // host: host Database,
+    // database: Name Database,
+    // password: Password Database,
+    // port: 5432,
 })
 
 const getAllCountry = async () => {
